@@ -9,7 +9,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body class="login-body">
@@ -172,6 +172,18 @@
   </div>
 
   <!-- JavaScript for password toggle and login handling -->
+  <script>
+    function togglePass() {
+      const input = document.getElementById('passInput');
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }
+    function handleLogin() {
+      const btn = document.querySelector('.btn-submit');
+      btn.textContent = 'Signing in…';
+      btn.style.opacity = '0.85';
+      setTimeout(() => window.location.href = 'dashboard.html', 1000);
+    }
+  </script>
 </body>
 
 </html>

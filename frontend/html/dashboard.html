@@ -9,7 +9,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
@@ -555,8 +555,20 @@
 
     </div>
   </main>
-<!-- javascript for filtering -->
-
+  <!-- javascript for filtering -->
+  <script>
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+    function filterByStatus(val) {
+      document.querySelectorAll('.task-card').forEach(card => {
+        card.style.display = (!val || card.dataset.status === val) ? '' : 'none';
+      });
+    }
+    function filterStatus(val, el) {
+      document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+      el.classList.add('active');
+      filterByStatus(val);
+    }
+  </script>
 </body>
 
 </html>
