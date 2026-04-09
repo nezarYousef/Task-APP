@@ -1,0 +1,7 @@
+A user flow is a visual representation of the steps a user takes to complete a specific task within a
+website or application. It maps the path from entry point to final goal, showing all screens, actions,
+and decision points.
+User flows help designers and developers:
+• Understand user behavior and expectations
+• Identify potential obstacles or confusing steps
+• Optimize the experience for efficiency and clarity
