@@ -122,8 +122,8 @@ body {
   align-items: center;
   padding: 0 24px 0 0;
   flex: wrap;
-  
-  
+
+
 }
 
 .nav-brand {
@@ -2535,10 +2535,11 @@ input[type="range"] {
   .nav-avatar {
     display: none;
   }
-  .nav-logo{
+
+  .nav-logo {
     display: none;
   }
-  
+
 
   .sidebar {
     transform: translateX(-100%);
@@ -2576,15 +2577,15 @@ input[type="range"] {
   }
 
 
-    .nav-btn span {
-    display: none; 
+  .nav-btn span {
+    display: none;
   }
 
   .nav-btn {
     padding: 7px;
   }
 
-    .nav-mobile-toggle {
+  .nav-mobile-toggle {
     display: flex;
   }
 
