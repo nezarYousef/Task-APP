@@ -1,4 +1,3 @@
-
 *,
 *::before,
 *::after {
@@ -2259,6 +2258,232 @@ input[type="range"] {
 .btn-danger:hover {
   background: rgba(238, 105, 131, 0.14);
   border-color: rgba(238, 105, 131, 0.4);
+}
+
+/* ── Mode tabs ── */
+.mode-tabs {
+  display: flex;
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 4px;
+  gap: 4px;
+  margin-bottom: 28px;
+}
+
+.mode-tab {
+  flex: 1;
+  padding: 9px 0;
+  border: none;
+  border-radius: 9px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.mode-tab.active {
+  background: #fff;
+  color: var(--crimson);
+  box-shadow: 0 2px 8px rgba(133, 14, 53, 0.12);
+}
+
+/* ── Field error/success states ── */
+.form-control.error {
+  border-color: #e53e3e !important;
+  background: #fff5f5 !important;
+  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1) !important;
+}
+
+.form-control.success {
+  border-color: #38a169 !important;
+  box-shadow: 0 0 0 3px rgba(56, 161, 105, 0.08) !important;
+}
+
+.field-error {
+  font-size: 11.5px;
+  color: #e53e3e;
+  margin-top: 6px;
+  display: none;
+  align-items: center;
+  gap: 5px;
+  animation: errIn 0.2s ease;
+}
+
+.field-error.show {
+  display: flex;
+}
+
+@keyframes errIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Status icon inside input (right side) ── */
+.input-status-icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: none;
+  pointer-events: none;
+}
+
+.input-wrap.has-toggle .input-status-icon {
+  right: 46px;
+}
+
+.input-wrap.show-err .input-status-icon.err-icon {
+  display: block;
+}
+
+.input-wrap.show-ok .input-status-icon.ok-icon {
+  display: block;
+}
+
+/* ── Password strength bar ── */
+.strength-wrap {
+  margin-top: 8px;
+  display: none;
+}
+
+.strength-wrap.show {
+  display: block;
+}
+
+.strength-bar {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--cream2);
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.strength-fill {
+  height: 100%;
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.35s ease, background 0.35s ease;
+}
+
+.strength-label {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ── Match hint ── */
+.match-hint {
+  font-size: 11.5px;
+  margin-top: 6px;
+  display: none;
+  align-items: center;
+  gap: 5px;
+}
+
+.match-hint.show {
+  display: flex;
+}
+
+.match-hint.ok {
+  color: #38a169;
+}
+
+.match-hint.bad {
+  color: #e53e3e;
+}
+
+/* ── Toast ── */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  box-shadow: 0 8px 30px rgba(133, 14, 53, 0.12);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 9999;
+  white-space: nowrap;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.toast.error-toast {
+  border-color: rgba(229, 62, 62, 0.3);
+}
+
+.toast-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.toast-dot.green {
+  background: #38a169;
+}
+
+.toast-dot.red {
+  background: #e53e3e;
+}
+
+/* ── Shake on error ── */
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20%,
+  60% {
+    transform: translateX(-6px);
+  }
+
+  40%,
+  80% {
+    transform: translateX(6px);
+  }
+}
+
+.btn-submit.shake {
+  animation: shake 0.35s ease;
+}
+
+/* ── Signup-only fields slide in/out ── */
+.signup-only {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+}
+
+.signup-only.visible {
+  max-height: 220px;
+  opacity: 1;
 }
 
 /* ===== ANIMATIONS ===== */

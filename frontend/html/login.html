@@ -4,12 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>App Task — Sign In</title>
+  <title>Momen Task — Sign In</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
+
 </head>
 
 <body class="login-body">
@@ -20,12 +21,18 @@
   <div class="shape s2"></div>
   <div class="shape s3"></div>
 
+  <!-- Toast notification -->
+  <div class="toast" id="toast">
+    <span class="toast-dot" id="toastDot"></span>
+    <span id="toastMsg"></span>
+  </div>
+
   <div class="page-wrap">
     <!-- Left brand panel -->
     <div class="left-panel">
       <div class="logo-wrap">
         <div class="logo-icon">MT</div>
-        <span class="logo-name">App Task</span>
+        <span class="logo-name">Momen Task</span>
       </div>
       <h1 class="brand-headline">
         Manage tasks<br>with <span class="accent">precision</span><br>and clarity.
@@ -80,53 +87,216 @@
 
     <div class="panel-divider"></div>
 
-    <!-- Right login card -->
+    <!-- Right card -->
     <div class="right-panel">
       <div class="login-card">
-        <div class="card-eyebrow">Welcome back</div>
-        <h2 class="card-title">Sign in to your workspace</h2>
-        <p class="card-sub">Don't have an account? <a href="#">Create one free</a></p>
 
+        <!-- Mode tabs -->
+        <div class="mode-tabs">
+          <button class="mode-tab active" id="tabSignIn" onclick="switchMode('signin')">Sign In</button>
+          <button class="mode-tab" id="tabSignUp" onclick="switchMode('signup')">Create Account</button>
+        </div>
+
+        <!-- Dynamic header -->
+        <div class="card-eyebrow" id="cardEyebrow">Welcome back</div>
+        <h2 class="card-title" id="cardTitle">Sign in to your workspace</h2>
+        <p class="card-sub" id="cardSub">New here? <a href="#" onclick="switchMode('signup');return false;">Create a
+            free account</a></p>
+
+        <!-- ── Full Name (signup only) ── -->
+        <div class="signup-only" id="nameGroup">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <div class="input-wrap" id="wrap-name">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+              <input class="form-control" type="text" id="nameInput" placeholder="John Doe"
+                oninput="liveValidate('name')" onblur="liveValidate('name')">
+              <span class="input-status-icon err-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e53e3e" stroke-width="2.5">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="15" y1="9" x2="9" y2="15" />
+                  <line x1="9" y1="9" x2="15" y2="15" />
+                </svg>
+              </span>
+              <span class="input-status-icon ok-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38a169" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </span>
+            </div>
+            <div class="field-error" id="err-name">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              <span id="err-name-msg">Please enter your full name</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Email ── -->
         <div class="form-group">
           <label class="form-label">Email address</label>
-          <div class="input-wrap">
+          <div class="input-wrap" id="wrap-email">
             <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
               stroke-width="2">
               <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
               <polyline points="22,6 12,13 2,6" />
             </svg>
-            <input class="form-control" type="email" placeholder="you@example.com">
+            <input class="form-control" type="email" id="emailInput" placeholder="you@example.com"
+              oninput="liveValidate('email')" onblur="liveValidate('email')">
+            <span class="input-status-icon err-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e53e3e" stroke-width="2.5">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="15" y1="9" x2="9" y2="15" />
+                <line x1="9" y1="9" x2="15" y2="15" />
+              </svg>
+            </span>
+            <span class="input-status-icon ok-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38a169" stroke-width="2.5">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </span>
+          </div>
+          <div class="field-error" id="err-email">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            <span id="err-email-msg">Please enter a valid email address</span>
           </div>
         </div>
 
+        <!-- ── Password ── -->
         <div class="form-group">
           <label class="form-label">Password</label>
-          <div class="input-wrap">
+          <div class="input-wrap has-toggle" id="wrap-password">
             <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
               stroke-width="2">
               <rect x="3" y="11" width="18" height="11" rx="2" />
               <path d="M7 11V7a5 5 0 0 1 10 0v4" />
             </svg>
-            <input class="form-control" type="password" id="passInput" placeholder="Enter your password">
-            <button class="pass-toggle" onclick="togglePass()" type="button">
+            <input class="form-control" type="password" id="passInput" placeholder="Enter your password"
+              oninput="liveValidate('password')" onblur="liveValidate('password')">
+            <button class="pass-toggle" onclick="togglePass('passInput','eye1')" type="button" id="eye1">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
                 <circle cx="12" cy="12" r="3" />
               </svg>
             </button>
+            <span class="input-status-icon err-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e53e3e" stroke-width="2.5">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="15" y1="9" x2="9" y2="15" />
+                <line x1="9" y1="9" x2="15" y2="15" />
+              </svg>
+            </span>
+            <span class="input-status-icon ok-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38a169" stroke-width="2.5">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </span>
+          </div>
+          <div class="field-error" id="err-password">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            <span id="err-password-msg">Password must be at least 8 characters</span>
+          </div>
+          <!-- Strength bar (signup only) -->
+          <div class="strength-wrap" id="strengthWrap">
+            <div class="strength-bar">
+              <div class="strength-fill" id="strengthFill"></div>
+            </div>
+            <span class="strength-label" id="strengthLabel">Strength: —</span>
           </div>
         </div>
 
-        <div class="form-row-login">
-          <label class="check-wrap">
-            <input type="checkbox">
-            <div class="check-box"><span class="check-inner">✓</span></div>
-            <span>Remember me</span>
-          </label>
-          <a href="#" class="forgot-link">Forgot password?</a>
+        <!-- ── Confirm Password (signup only) ── -->
+        <div class="signup-only" id="confirmGroup">
+          <div class="form-group">
+            <label class="form-label">Confirm Password</label>
+            <div class="input-wrap has-toggle" id="wrap-confirm">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+              <input class="form-control" type="password" id="confirmInput" placeholder="Re-enter your password"
+                oninput="liveValidate('confirm')" onblur="liveValidate('confirm')">
+              <button class="pass-toggle" onclick="togglePass('confirmInput','eye2')" type="button" id="eye2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              </button>
+              <span class="input-status-icon err-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e53e3e" stroke-width="2.5">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="15" y1="9" x2="9" y2="15" />
+                  <line x1="9" y1="9" x2="15" y2="15" />
+                </svg>
+              </span>
+              <span class="input-status-icon ok-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38a169" stroke-width="2.5">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </span>
+            </div>
+            <div class="match-hint" id="matchHint"></div>
+            <div class="field-error" id="err-confirm">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              <span id="err-confirm-msg">Passwords do not match</span>
+            </div>
+          </div>
         </div>
 
-        <button class="btn-submit" onclick="handleLogin()">Sign In</button>
+        <!-- ── Remember me / Forgot (signin only) ── -->
+        <div id="rememberRow">
+          <div class="form-row-login">
+            <label class="check-wrap">
+              <input type="checkbox" id="rememberMe">
+              <div class="check-box"><span class="check-inner">✓</span></div>
+              <span>Remember me</span>
+            </label>
+            <a href="#" class="forgot-link">Forgot password?</a>
+          </div>
+        </div>
+
+        <!-- ── Terms checkbox (signup only) ── -->
+        <div class="signup-only" id="termsGroup" style="margin-bottom:20px;">
+          <label class="check-wrap" style="font-size:12px;color:var(--text-muted);">
+            <input type="checkbox" id="termsCheck" onchange="liveValidate('terms')">
+            <div class="check-box"><span class="check-inner">✓</span></div>
+            <span>I agree to the
+              <a href="#" style="color:var(--rose);text-decoration:none;font-weight:500;">Terms of Service</a>
+              and
+              <a href="#" style="color:var(--rose);text-decoration:none;font-weight:500;">Privacy Policy</a>
+            </span>
+          </label>
+          <div class="field-error" id="err-terms" style="margin-top:6px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            <span>You must accept the terms to continue</span>
+          </div>
+        </div>
+
+        <!-- ── Submit ── -->
+        <button class="btn-submit" id="submitBtn" onclick="handleSubmit()">Sign In</button>
 
         <div class="divider">or continue with</div>
 
@@ -171,19 +341,7 @@
     </div>
   </div>
 
-  <!-- JavaScript for password toggle and login handling -->
-  <script>
-    function togglePass() {
-      const input = document.getElementById('passInput');
-      input.type = input.type === 'password' ? 'text' : 'password';
-    }
-    function handleLogin() {
-      const btn = document.querySelector('.btn-submit');
-      btn.textContent = 'Signing in…';
-      btn.style.opacity = '0.85';
-      setTimeout(() => window.location.href = 'dashboard.html', 1000);
-    }
-  </script>
+  <script src="../js/login.js"></script>
 </body>
 
 </html>
