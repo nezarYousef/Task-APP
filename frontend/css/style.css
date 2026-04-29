@@ -121,6 +121,9 @@ body {
   display: flex;
   align-items: center;
   padding: 0 24px 0 0;
+  flex: wrap;
+  
+  
 }
 
 .nav-brand {
@@ -252,6 +255,7 @@ body {
   color: #fff;
   cursor: pointer;
   border: 2px solid rgba(238, 105, 131, 0.3);
+
 }
 
 .nav-mobile-toggle {
@@ -2528,6 +2532,14 @@ input[type="range"] {
 }
 
 @media (max-width: 768px) {
+  .nav-avatar {
+    display: none;
+  }
+  .nav-logo{
+    display: none;
+  }
+  
+
   .sidebar {
     transform: translateX(-100%);
   }
@@ -2544,6 +2556,7 @@ input[type="range"] {
   .nav-brand {
     width: auto;
     border-right: none;
+    padding: 0 12px;
   }
 
   .nav-mobile-toggle {
@@ -2561,4 +2574,20 @@ input[type="range"] {
   .side-panel {
     grid-template-columns: 1fr;
   }
+
+
+    .nav-btn span {
+    display: none; 
+  }
+
+  .nav-btn {
+    padding: 7px;
+  }
+
+    .nav-mobile-toggle {
+    display: flex;
+  }
+
+
+
 }
