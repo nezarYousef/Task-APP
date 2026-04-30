@@ -9,7 +9,7 @@ function switchMode(m) {
     document.getElementById('tabSignIn').classList.toggle('active', !isSignup);
     document.getElementById('tabSignUp').classList.toggle('active', isSignup);
 
-    document.getElementById('cardEyebrow').textContent = isSignup ? 'Join Momen Task' : 'Welcome back';
+    document.getElementById('cardEyebrow').textContent = isSignup ? 'Join Task APP' : 'Welcome back';
     document.getElementById('cardTitle').textContent = isSignup ? 'Create your account' : 'Sign in to your workspace';
     document.getElementById('cardSub').innerHTML = isSignup
         ? 'Already have an account? <a href="#" onclick="switchMode(\'signin\');return false;">Sign in</a>'
