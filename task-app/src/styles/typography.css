@@ -1,0 +1,126 @@
+/* ── Headings ────────────────────────────────────────────────────────────── */
+.display-title {
+  font-family: "Playfair Display", serif;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.15;
+}
+
+.page-title {
+  font-family: "Playfair Display", serif;
+  font-weight: 700;
+  font-size: 26px;
+  color: var(--text);
+}
+
+.section-title {
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-title-icon {
+  color: var(--rose);
+  display: flex;
+  align-items: center;
+}
+
+.card-title {
+  font-family: "Playfair Display", serif;
+  font-weight: 700;
+  font-size: 26px;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.task-card-title {
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+/* ── Labels ──────────────────────────────────────────────────────────────── */
+.page-eyebrow {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--rose);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.page-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  font-weight: 300;
+}
+
+.info-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+/* ── Stat numbers ────────────────────────────────────────────────────────── */
+.stat-value {
+  font-family: "Playfair Display", serif;
+  font-weight: 700;
+  font-size: 30px;
+  color: var(--text);
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ── Misc ────────────────────────────────────────────────────────────────── */
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-sub {
+  color: var(--text-sub);
+}
+
+.text-rose {
+  color: var(--rose);
+}
+
+.text-crimson {
+  color: var(--crimson);
+}
+
+.text-accent {
+  color: var(--crimson);
+  font-weight: 500;
+}
+
+.modal-title {
+  font-family: "Playfair Display", serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.modal-body {
+  font-size: 14px;
+  color: var(--text-sub);
+  line-height: 1.6;
+}

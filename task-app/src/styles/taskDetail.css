@@ -1,0 +1,437 @@
+/* ── Content grid ────────────────────────────────────────────────────────── */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+  align-items: start;
+}
+
+/* ── Hero image area ─────────────────────────────────────────────────────── */
+.task-hero {
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  height: 300px;
+  border: 1px solid var(--border);
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #fde8f0, #ffd0d8);
+}
+
+.task-hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.task-hero-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(42, 13, 24, 0.55) 0%, transparent 50%);
+}
+
+.task-hero-footer {
+  position: absolute;
+  bottom: 18px;
+  left: 18px;
+}
+
+.task-hero-category {
+  background: rgba(252, 245, 238, 0.93);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(238, 105, 131, 0.25);
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--crimson);
+}
+
+/* ── Info card ───────────────────────────────────────────────────────────── */
+.info-card {
+  padding: 28px;
+  margin-bottom: 20px;
+}
+
+.info-card-title {
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-card-title-icon {
+  color: var(--rose);
+  display: flex;
+  align-items: center;
+}
+
+/* ── Info row ────────────────────────────────────────────────────────────── */
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(238, 105, 131, 0.08);
+}
+
+.info-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.info-row-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(238, 105, 131, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rose);
+  flex-shrink: 0;
+}
+
+.info-row-content {
+  flex: 1;
+}
+
+.info-row-value {
+  font-size: 14px;
+  color: var(--text);
+}
+
+/* ── Description card ────────────────────────────────────────────────────── */
+.desc-card {
+  padding: 28px;
+  margin-bottom: 20px;
+}
+
+.desc-text {
+  font-size: 14px;
+  color: var(--text-sub);
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+/* ── Checklist card ──────────────────────────────────────────────────────── */
+.detail-checklist-card {
+  padding: 28px;
+  margin-top: 20px;
+}
+
+/* ── Status tab group ────────────────────────────────────────────────────── */
+.status-tab-group {
+  display: flex;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  padding: 4px;
+  gap: 2px;
+}
+
+.status-tab {
+  padding: 7px 12px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  background: transparent;
+  color: var(--text-sub);
+  transition: background var(--tr), color var(--tr);
+}
+
+.status-tab:hover {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.status-tab.active-waiting {
+  background: rgba(232, 160, 112, 0.15);
+  color: #c06020;
+}
+
+.status-tab.active-inprogress {
+  background: rgba(133, 14, 53, 0.1);
+  color: var(--crimson);
+}
+
+.status-tab.active-complete {
+  background: rgba(80, 180, 100, 0.1);
+  color: #2d7a3a;
+}
+
+.status-tab.active-canceled {
+  background: rgba(238, 105, 131, 0.12);
+  color: var(--rose);
+}
+
+/* ── Page actions ────────────────────────────────────────────────────────── */
+.detail-header-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+  padding-top: 28px;
+}
+
+/* ── Right detail sidebar ────────────────────────────────────────────────── */
+.detail-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.detail-side-card {
+  padding: 22px;
+}
+
+.detail-side-title {
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.detail-side-title-icon {
+  color: var(--rose);
+  display: flex;
+  align-items: center;
+}
+
+/* ── Progress ring ───────────────────────────────────────────────────────── */
+.progress-ring-wrap {
+  text-align: center;
+}
+
+.progress-ring-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.progress-ring-svg {
+  transform: rotate(-90deg);
+}
+
+.progress-ring-center {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.progress-pct {
+  font-family: "Playfair Display", serif;
+  font-weight: 700;
+  font-size: 26px;
+  color: var(--text);
+}
+
+.progress-lbl {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.progress-slider {
+  width: 100%;
+  margin-top: 8px;
+  accent-color: var(--rose);
+}
+
+/* ── Date range ──────────────────────────────────────────────────────────── */
+.date-range {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.date-box {
+  flex: 1;
+  background: var(--cream);
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+
+.date-box-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.date-box-val {
+  font-family: "Playfair Display", serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.date-range-arrow {
+  color: var(--rose);
+  flex-shrink: 0;
+}
+
+.days-remaining {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ── Task header tags ────────────────────────────────────────────────────── */
+.task-header-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+/* ── Task priority text in info row ──────────────────────────────────────── */
+.task-priority-text {
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+/* ── Hero placeholder text ───────────────────────────────────────────────── */
+.hero-no-image-text {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ── Save button ─────────────────────────────────────────────────────────── */
+.btn-save-changes {
+  padding: 9px 18px;
+  font-size: 13px;
+}
+
+/* ── Full width danger button ────────────────────────────────────────────── */
+.btn-full-width {
+  width: 100%;
+  padding: 11px;
+}
+
+/* ── Created info ────────────────────────────────────────────────────────── */
+.detail-created-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.detail-created-value {
+  font-size: 14px;
+  color: var(--text);
+}
+
+/* ── Danger zone card ────────────────────────────────────────────────────── */
+.danger-zone-card {
+  border-color: rgba(238, 105, 131, 0.25) !important;
+}
+
+.danger-zone-card .detail-side-title {
+  color: var(--rose);
+}
+
+/* ── Activity feed ───────────────────────────────────────────────────────── */
+.activity-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-item {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  position: relative;
+}
+
+.activity-item::before {
+  content: "";
+  position: absolute;
+  left: 15px;
+  top: 34px;
+  bottom: -10px;
+  width: 1px;
+  background: var(--border);
+}
+
+.activity-item:last-child::before {
+  display: none;
+}
+
+.activity-dot {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.activity-dot-rose {
+  background: rgba(238, 105, 131, 0.12);
+  color: var(--rose);
+}
+
+.activity-dot-crimson {
+  background: rgba(133, 14, 53, 0.1);
+  color: var(--crimson);
+}
+
+.activity-dot-amber {
+  background: rgba(232, 160, 112, 0.15);
+  color: #c06020;
+}
+
+.activity-text {
+  font-size: 12px;
+  color: var(--text-sub);
+  line-height: 1.5;
+  padding-top: 6px;
+}
+
+.activity-time {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}

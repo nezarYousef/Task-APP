@@ -1,0 +1,301 @@
+/* ── Form group with no bottom margin ────────────────────────────────────── */
+.form-group-last {
+  margin-bottom: 0;
+}
+
+/* ── Form action buttons ─────────────────────────────────────────────────── */
+.form-btn-submit {
+  flex: 1;
+  padding: 14px;
+}
+
+.form-btn-cancel {
+  padding: 14px 20px;
+}
+
+/* ── Page layout ─────────────────────────────────────────────────────────── */
+.new-task-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 28px;
+  align-items: start;
+}
+
+/* ── Form card ───────────────────────────────────────────────────────────── */
+.form-card {
+  padding: 36px;
+}
+
+/* ── Schedule row ────────────────────────────────────────────────────────── */
+.schedule-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* ── Upload icon placeholder ─────────────────────────────────────────────── */
+.upload-icon-wrap {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  background: rgba(238, 105, 131, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  color: var(--rose);
+}
+
+.upload-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.upload-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.upload-subtitle span {
+  color: var(--rose);
+  font-weight: 500;
+}
+
+.upload-preview-img {
+  width: 100%;
+  max-height: 160px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.upload-remove-btn {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--rose);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color var(--tr);
+}
+
+.upload-remove-btn:hover {
+  color: var(--crimson);
+}
+
+/* ── Form actions ────────────────────────────────────────────────────────── */
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+/* ── Side panel ──────────────────────────────────────────────────────────── */
+.side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.side-card {
+  padding: 22px;
+}
+
+.side-card-title {
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.side-card-title-icon {
+  color: var(--rose);
+  display: flex;
+  align-items: center;
+}
+
+/* ── Status options ──────────────────────────────────────────────────────── */
+.status-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.status-option-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--text-sub);
+  transition: border-color var(--tr), background var(--tr), color var(--tr);
+}
+
+.status-option-btn:hover {
+  border-color: rgba(238, 105, 131, 0.35);
+  background: var(--surface);
+}
+
+/* Active states for each status */
+.status-option-btn.active-waiting {
+  background: rgba(232, 160, 112, 0.12);
+  border-color: rgba(232, 160, 112, 0.4);
+  color: #c06020;
+}
+
+.status-option-btn.active-inprogress {
+  background: rgba(133, 14, 53, 0.08);
+  border-color: rgba(133, 14, 53, 0.3);
+  color: var(--crimson);
+}
+
+.status-option-btn.active-complete {
+  background: rgba(80, 180, 100, 0.1);
+  border-color: rgba(80, 180, 100, 0.35);
+  color: #2d7a3a;
+}
+
+.status-option-btn.active-canceled {
+  background: rgba(238, 105, 131, 0.1);
+  border-color: rgba(238, 105, 131, 0.4);
+  color: var(--rose);
+}
+
+/* ── Priority buttons ────────────────────────────────────────────────────── */
+.priority-row {
+  display: flex;
+  gap: 8px;
+}
+
+.priority-btn {
+  flex: 1;
+  padding: 9px 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--text-sub);
+  transition: all var(--tr);
+}
+
+.priority-btn:hover {
+  border-color: rgba(238, 105, 131, 0.4);
+  color: var(--text);
+}
+
+.priority-btn.active-low {
+  background: rgba(80, 180, 100, 0.1);
+  border-color: rgba(80, 180, 100, 0.35);
+  color: #2d7a3a;
+}
+
+.priority-btn.active-medium {
+  background: rgba(232, 160, 112, 0.12);
+  border-color: rgba(232, 160, 112, 0.4);
+  color: #c06020;
+}
+
+.priority-btn.active-high {
+  background: rgba(238, 105, 131, 0.12);
+  border-color: rgba(238, 105, 131, 0.4);
+  color: var(--rose);
+}
+
+/* ── Checklist ───────────────────────────────────────────────────────────── */
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: color var(--tr);
+}
+
+.checklist-item.done {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.checklist-box {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--tr), border-color var(--tr);
+  border: 1.5px solid rgba(238, 105, 131, 0.3);
+  background: var(--cream);
+}
+
+.checklist-box.checked {
+  background: linear-gradient(135deg, var(--rose), var(--crimson));
+  border-color: var(--rose);
+}
+
+/* ── Tips ────────────────────────────────────────────────────────────────── */
+.tips-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tip-item {
+  display: flex;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.tip-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--rose);
+  flex-shrink: 0;
+  margin-top: 7px;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .new-task-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .side-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .schedule-row {
+    grid-template-columns: 1fr;
+  }
+
+  .side-panel {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,313 @@
+/* ── Stats Grid ──────────────────────────────────────────────────────────── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+/* ── Stat Card ───────────────────────────────────────────────────────────── */
+.stat-card {
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.stat-card-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+
+.stat-card-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+/* ── Filter Bar ──────────────────────────────────────────────────────────── */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.filter-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.filter-select {
+  padding: 8px 32px 8px 12px;
+  font-size: 13px;
+  width: auto;
+}
+
+/* ── Tasks Grid ──────────────────────────────────────────────────────────── */
+.tasks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 18px;
+}
+
+/* ── Filter action buttons ───────────────────────────────────────────────── */
+.btn-clear-filters {
+  padding: 8px 14px;
+  font-size: 12px;
+}
+
+.btn-add-task {
+  margin-left: auto;
+}
+
+/* ── Task Card ───────────────────────────────────────────────────────────── */
+.task-card {
+  overflow: visible;
+  /* dropdown needs to escape */
+  cursor: pointer;
+}
+
+.task-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 45px rgba(133, 14, 53, 0.12);
+  border-color: rgba(238, 105, 131, 0.4);
+}
+
+/* ── Task card image area ────────────────────────────────────────────────── */
+.task-card-image {
+  height: 160px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* overflow:visible — lets dropdown escape the image bounds */
+  overflow: visible;
+}
+
+/* inner wrapper: clips zoom + overlay WITHOUT clipping the dropdown */
+.task-card-image-inner {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.task-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.task-card:hover .task-card-img {
+  transform: scale(1.05);
+}
+
+.task-card-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(42, 13, 24, 0.6) 0%, transparent 55%);
+}
+
+/* ── Category badge on image ─────────────────────────────────────────────── */
+.task-category-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(252, 245, 238, 0.93);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(238, 105, 131, 0.25);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--crimson);
+}
+
+/* ── Options menu trigger ────────────────────────────────────────────────── */
+.task-options-wrap {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.task-options-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: rgba(252, 245, 238, 0.9);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-sub);
+  transition: background var(--tr);
+}
+
+.task-options-btn:hover {
+  background: rgba(252, 245, 238, 1);
+}
+
+/* ── Options dropdown ────────────────────────────────────────────────────── */
+.task-options-dropdown {
+  position: absolute;
+  top: 32px;
+  right: 0;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 6px;
+  min-width: 155px;
+  box-shadow: var(--shadow-md);
+  z-index: 100;
+}
+
+.task-options-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 7px 10px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  color: var(--text-sub);
+  cursor: pointer;
+  transition: background var(--tr);
+}
+
+.task-options-item:hover {
+  background: var(--surface);
+}
+
+.task-options-item.danger {
+  color: var(--rose);
+}
+
+.task-options-item.danger:hover {
+  background: rgba(238, 105, 131, 0.08);
+}
+
+.task-options-separator {
+  margin: 4px 0;
+  border: none;
+  border-top: 1px solid var(--border);
+}
+
+/* ── Task card body ──────────────────────────────────────────────────────── */
+.task-card-body {
+  padding: 18px;
+}
+
+.task-date-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.task-date-sep {
+  color: var(--rose);
+  font-weight: 700;
+}
+
+.task-progress-wrap {
+  margin-bottom: 14px;
+}
+
+.task-progress-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.task-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+/* ── Empty state ─────────────────────────────────────────────────────────── */
+.dashboard-empty {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+/* ── Task card image backgrounds per category ────────────────────────────── */
+.task-card-image-design {
+  background: linear-gradient(135deg, #fde8f0, #ffd0d8);
+}
+
+.task-card-image-dev {
+  background: linear-gradient(135deg, #fce8e8, #ffd0d0);
+}
+
+.task-card-image-security {
+  background: linear-gradient(135deg, #f5e8ec, #eeccd6);
+}
+
+.task-card-image-research {
+  background: linear-gradient(135deg, #fdeee8, #fad8c8);
+}
+
+.task-card-image-default {
+  background: linear-gradient(135deg, #fce8f0, #ffd0e0);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 1000px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ── Archive option in dropdown ──────────────────────────────────────────── */
+.task-options-archive {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-sub);
+}
+
+.task-options-archive:hover {
+  background: rgba(255, 196, 196, 0.2);
+  color: var(--crimson);
+}
+
+/* ── Dropdown group label ─────────────────────────────────────────────────── */
+.task-options-group-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 4px 10px 2px;
+}

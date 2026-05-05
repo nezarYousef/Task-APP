@@ -1,0 +1,328 @@
+/* ── Card ────────────────────────────────────────────────────────────────── */
+.card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  transition: box-shadow var(--tr), transform var(--tr);
+}
+
+/* ── Status Badges ───────────────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.badge-waiting {
+  background: rgba(232, 160, 112, 0.15);
+  color: #c06020;
+}
+
+.badge-inprogress {
+  background: rgba(133, 14, 53, 0.10);
+  color: var(--crimson);
+}
+
+.badge-complete {
+  background: rgba(80, 180, 100, 0.12);
+  color: #2d7a3a;
+}
+
+.badge-canceled {
+  background: rgba(238, 105, 131, 0.12);
+  color: var(--rose);
+}
+
+/* ── Priority Badges ─────────────────────────────────────────────────────── */
+.badge-priority-low {
+  background: rgba(80, 180, 100, 0.12);
+  color: #2d7a3a;
+}
+
+.badge-priority-medium {
+  background: rgba(232, 160, 112, 0.15);
+  color: #c06020;
+}
+
+.badge-priority-high {
+  background: rgba(238, 105, 131, 0.12);
+  color: var(--rose);
+}
+
+/* ── Tag ─────────────────────────────────────────────────────────────────── */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(238, 105, 131, 0.12);
+  color: var(--crimson);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.tag-remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  font-size: 14px;
+  line-height: 1;
+  opacity: 0.7;
+  padding: 0;
+  transition: opacity var(--tr);
+}
+
+.tag-remove:hover {
+  opacity: 1;
+}
+
+/* ── Progress Bar ────────────────────────────────────────────────────────── */
+.progress-bar-wrap {
+  height: 4px;
+  background: var(--cream2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+.fill-rose {
+  background: linear-gradient(90deg, var(--rose), var(--blush));
+}
+
+.fill-crimson {
+  background: linear-gradient(90deg, var(--crimson), var(--rose));
+}
+
+.fill-amber {
+  background: linear-gradient(90deg, #e8a070, #f5c89a);
+}
+
+.fill-green {
+  background: linear-gradient(90deg, #50b464, #90d8a0);
+}
+
+/* ── Alert ───────────────────────────────────────────────────────────────── */
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.alert-error {
+  background: rgba(238, 105, 131, 0.1);
+  border: 1px solid rgba(238, 105, 131, 0.3);
+  color: var(--crimson);
+}
+
+.alert-success {
+  background: rgba(80, 180, 100, 0.1);
+  border: 1px solid rgba(80, 180, 100, 0.3);
+  color: #2d7a3a;
+}
+
+.alert-info {
+  background: rgba(255, 196, 196, 0.2);
+  border: 1px solid rgba(238, 105, 131, 0.2);
+  color: var(--text-sub);
+}
+
+.alert-message {
+  flex: 1;
+  line-height: 1.5;
+}
+
+.alert-close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: inherit;
+  opacity: 0.7;
+  padding: 0;
+  margin-left: auto;
+  line-height: 1;
+  transition: opacity var(--tr);
+  flex-shrink: 0;
+}
+
+.alert-close-btn:hover {
+  opacity: 1;
+}
+
+/* ── Spinner ─────────────────────────────────────────────────────────────── */
+.spinner {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2.5px solid rgba(238, 105, 131, 0.3);
+  border-top-color: var(--rose);
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+.spinner-white {
+  border-color: rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+}
+
+.spinner-sm {
+  width: 16px;
+  height: 16px;
+  border-width: 2px;
+}
+
+/* ── Loading Overlay ─────────────────────────────────────────────────────── */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(252, 245, 238, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(4px);
+}
+
+.loading-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.loading-text {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+/* ── Inline Loading ──────────────────────────────────────────────────────── */
+.loading-inline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 0;
+}
+
+/* ── Confirm Modal ───────────────────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(42, 13, 24, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(4px);
+}
+
+.modal-box {
+  background: #fff;
+  border-radius: var(--radius-xl);
+  padding: 36px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: var(--shadow-lg);
+  animation: fadeUp 0.3s ease both;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+/* ── Empty State ─────────────────────────────────────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.empty-state-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+/* ── Alert icon ──────────────────────────────────────────────────────────── */
+.alert-icon {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ── Empty state text ────────────────────────────────────────────────────── */
+.empty-state-title {
+  font-family: "Playfair Display", serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.empty-state-message {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+/* ── Full-width button ───────────────────────────────────────────────────── */
+.btn-full {
+  width: 100%;
+  padding: 14px;
+  font-size: 15px;
+}
+
+/* ── Days highlight classes ──────────────────────────────────────────────── */
+.days-highlight {
+  font-weight: 600;
+}
+
+.days-overdue {
+  color: var(--rose);
+}
+
+.days-warning {
+  color: #c06020;
+}
+
+.days-ok {
+  color: var(--crimson);
+}
+
+/* ── Progress ring fill transition ───────────────────────────────────────── */
+.progress-ring-fill-circle {
+  transition: stroke-dashoffset 0.5s ease;
+}
+
+/* ── Divider ─────────────────────────────────────────────────────────────── */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--text-muted);
+  font-size: 12px;
+  margin: 24px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(238, 105, 131, 0.2);
+}

@@ -1,0 +1,83 @@
+/* ── Sidebar link ────────────────────────────────────────────────────────── */
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 22px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-sub);
+  text-decoration: none;
+  transition: color var(--tr), background var(--tr);
+  position: relative;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+}
+
+.sidebar-link:hover {
+  color: var(--text);
+  background: var(--surface);
+}
+
+.sidebar-link.active {
+  color: var(--crimson);
+  background: rgba(255, 196, 196, 0.2);
+}
+
+.sidebar-link.active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--crimson);
+  border-radius: 0 2px 2px 0;
+}
+
+/* ── Sidebar badge ───────────────────────────────────────────────────────── */
+.sidebar-badge {
+  margin-left: auto;
+  background: rgba(238, 105, 131, 0.15);
+  color: var(--rose);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 20px;
+}
+
+/* ── Status dot ──────────────────────────────────────────────────────────── */
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+.status-dot-inprogress {
+  background: var(--crimson);
+}
+
+.status-dot-waiting {
+  background: #e8a070;
+}
+
+.status-dot-complete {
+  background: #50b464;
+}
+
+.status-dot-canceled {
+  background: var(--rose);
+}
+
+/* .sidebar {
+  transform: translateX(-100%);
+  transition: 0.3s;
+}
+
+.sidebar.open {
+  transform: translateX(0);
+} */

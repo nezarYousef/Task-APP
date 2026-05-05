@@ -1,0 +1,107 @@
+/* ── Base Button ─────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 11px 22px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: transform var(--tr), box-shadow var(--tr), background var(--tr), opacity var(--tr);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* ── Primary ─────────────────────────────────────────────────────────────── */
+.btn-primary {
+  background: linear-gradient(135deg, var(--rose), var(--crimson));
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(133, 14, 53, 0.25);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(133, 14, 53, 0.35);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* ── Secondary ───────────────────────────────────────────────────────────── */
+.btn-secondary {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--text-sub);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* ── Ghost ───────────────────────────────────────────────────────────────── */
+.btn-ghost {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--text-sub);
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* ── Rose accent ─────────────────────────────────────────────────────────── */
+.btn-rose {
+  background: rgba(238, 105, 131, 0.1);
+  border: 1.5px solid rgba(238, 105, 131, 0.35);
+  color: var(--crimson);
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+.btn-rose:hover:not(:disabled) {
+  background: rgba(238, 105, 131, 0.18);
+}
+
+/* ── Danger ──────────────────────────────────────────────────────────────── */
+.btn-danger {
+  background: rgba(238, 105, 131, 0.08);
+  border: 1.5px solid rgba(238, 105, 131, 0.25);
+  color: var(--rose);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: rgba(238, 105, 131, 0.15);
+  border-color: rgba(238, 105, 131, 0.4);
+}
+
+/* ── Icon-only button ────────────────────────────────────────────────────── */
+.btn-icon {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: var(--radius-sm);
+  background: var(--cream);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.btn-icon:hover:not(:disabled) {
+  background: rgba(238, 105, 131, 0.1);
+  color: var(--rose);
+  border-color: rgba(238, 105, 131, 0.3);
+}
