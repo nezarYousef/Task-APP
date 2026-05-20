@@ -1,24 +1,27 @@
 FROM richarvey/nginx-php-fpm:3.1.6
 
+WORKDIR /var/www/html
+
 COPY . .
 
-# إعدادات الصورة  osama
-ENV SKIP_COMPOSER 0
-ENV WEBROOT /var/www/html/public
-ENV PHP_ERRORS_STDERR 1
-ENV RUN_SCRIPTS 1
-ENV REAL_IP_HEADER 1
+# لا توقف composer
+ENV SKIP_COMPOSER=0
 
-# إعدادات Laravel
-ENV APP_ENV production
-ENV APP_DEBUG false
-ENV LOG_CHANNEL stderr
+ENV WEBROOT=/var/www/html/public
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
-# السماح لـ Composer بالعمل
-ENV COMPOSER_ALLOW_SUPERUSER 1
+ENV APP_ENV=production
+ENV APP_DEBUG=false
+ENV LOG_CHANNEL=stderr
 
-
+# تثبيت dependencies بشكل إجباري
 RUN composer install --no-dev --optimize-autoloader
 
+# إصلاح صلاحيات Laravel
 RUN chmod -R 777 storage bootstrap/cache
+
+# تنظيف كاش Laravel (مهم جدًا)
+RUN php artisan config:clear || true
+RUN php artisan cache:clear || true
+
 CMD ["/start.sh"]
