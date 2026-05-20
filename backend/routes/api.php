@@ -5,6 +5,12 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TaskHistoryController;
 use Illuminate\Support\Facades\Route;
 
+
+Route::get('/', function () {
+    return response()->json([
+        'status' => 'API working'
+    ]);
+});
 /*
 |-------------------------
 | Public Auth
@@ -20,6 +26,7 @@ Route::prefix('auth')->group(function () {
 | Protected (JWT)
 |-------------------------
 */
+
 Route::middleware('auth:api')->group(function () {
 
     Route::prefix('auth')->group(function () {
