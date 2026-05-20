@@ -1,5 +1,4 @@
-FROM richarvey/nginx-php-fpm:3.1.6
-
+FROM richarvey/nginx-php-fpm:latest
 WORKDIR /var/www/html
 
 COPY . .
@@ -9,7 +8,7 @@ ENV SKIP_COMPOSER=0
 
 ENV WEBROOT=/var/www/html/public
 ENV COMPOSER_ALLOW_SUPERUSER=1
-
+ENV PHP_FPM_LISTEN=9000
 ENV APP_ENV=production
 ENV APP_DEBUG=false
 ENV LOG_CHANNEL=stderr
