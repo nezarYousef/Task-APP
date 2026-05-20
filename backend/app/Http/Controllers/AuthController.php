@@ -66,11 +66,61 @@ class AuthController extends Controller
         ]);
     }
 
+
     //Get Auth User
     public function me()
     {
         return response()->json([
             'user' => auth()->user()
+        ]);
+    }
+    // update my Profile
+    public function updateProfile(Request $request)
+    {
+        $user = auth()->user();
+
+        $request->validate([
+            'name' => 'sometimes|string|max:100',
+            'email' => 'sometimes|email|unique:users,email,' . $user->id,
+            'phone' => 'sometimes|nullable|string|max:20|unique:users,phone,' . $user->id,
+            'password' => 'sometimes|min:6',
+        ]);
+
+        if ($request->name) {
+            $user->name = $request->name;
+        }
+
+        if ($request->email) {
+            $user->email = $request->email;
+        }
+
+        if ($request->phone) {
+            $user->phone = $request->phone;
+        }
+
+        if ($request->password) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        return response()->json([
+            'message' => 'Profile updated successfully',
+            'user' => $user
+        ]);
+    }
+
+    //delete me
+    public function deleteAccount()
+    {
+        $user = auth()->user();
+
+        $user->delete();
+
+        auth()->logout();
+
+        return response()->json([
+            'message' => 'Account deleted successfully'
         ]);
     }
 }

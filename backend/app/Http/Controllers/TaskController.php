@@ -79,31 +79,31 @@ class TaskController extends Controller
     }
 
    public function update(Request $request, $id)
-{
-    $task = $this->getTaskOrFail($id);
+    {
+        $task = $this->getTaskOrFail($id);
 
-    if ($task instanceof JsonResponse) {
-        return $task;
+        if ($task instanceof JsonResponse) {
+            return $task;
+        }
+
+        $oldStatus = $task->status;
+
+        // 1. نعمل update فقط للبيانات
+        $task->update($request->all());
+
+        // 2. نتأكد أن status فعلاً تغير
+        if ($request->filled('status') && $request->status !== $oldStatus) {
+
+            TaskHistory::create([
+                'task_id' => $task->id,
+                'changed_by' => auth()->id(),
+                'old_status' => $oldStatus,
+                'new_status' => $request->status,
+            ]);
+        }
+
+        return response()->json($task);
     }
-
-    $oldStatus = $task->status;
-
-    // 1. نعمل update فقط للبيانات
-    $task->update($request->all());
-
-    // 2. نتأكد أن status فعلاً تغير
-    if ($request->filled('status') && $request->status !== $oldStatus) {
-
-        TaskHistory::create([
-            'task_id' => $task->id,
-            'changed_by' => auth()->id(),
-            'old_status' => $oldStatus,
-            'new_status' => $request->status,
-        ]);
-    }
-
-    return response()->json($task);
-}
    public function destroy($id)
     {
         $task = $this->getTaskOrFail($id);
@@ -137,29 +137,6 @@ class TaskController extends Controller
     }
 
 
-   public function forceUpdate(Request $request, $id)
-    {
-        $task = Task::withTrashed()->find($id);
-
-        if (!$task) {
-            return response()->json([
-                'message' => 'Task not found'
-            ], 404);
-        }
-
-        if ($task->user_id !== auth()->id()) {
-            return response()->json([
-                'message' => 'You are not allowed to modify this task'
-            ], 403);
-        }
-
-        $task->update($request->all());
-
-        return response()->json([
-            'message' => 'Task updated forcefully',
-            'task' => $task
-        ]);
-    }
     public function forceDelete($id)
     {
         $task = Task::withTrashed()->find($id);
@@ -180,6 +157,31 @@ class TaskController extends Controller
 
         return response()->json([
             'message' => 'Task permanently deleted'
+        ]);
+    }
+
+    public function restore($id)
+    {
+        $task = Task::withTrashed()->find($id);
+
+        if (!$task) {
+            return response()->json([
+                'message' => 'Task not found'
+            ], 404);
+        }
+
+        //  حماية: فقط صاحب المهمة
+        if ($task->user_id !== auth()->id()) {
+            return response()->json([
+                'message' => 'You are not allowed to restore this task'
+            ], 403);
+        }
+
+        $task->restore();
+
+        return response()->json([
+            'message' => 'Task restored successfully',
+            'task' => $task
         ]);
     }
 }
