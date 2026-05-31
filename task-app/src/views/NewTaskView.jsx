@@ -147,7 +147,7 @@ export default function NewTaskView() {
             </div>
 
             <SectionTitle icon={<ImgIcon />}>Task Image</SectionTitle>
-            <ImageUpload preview={imagePreview} onPreviewChange={setImagePreview} />
+            <ImageUpload preview={imagePreview} onPreviewChange={setImagePreview} onError={setError} />
 
             <div className="form-actions">
               <button type="submit" className="btn btn-primary form-btn-submit" disabled={loading}>

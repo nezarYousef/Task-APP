@@ -1,16 +1,17 @@
 // src/components/task/DateRange.js
 import React from "react";
+import { safeDateLabel } from "../../utils/validation";
 
 function fmt(d) {
   if (!d) return "—";
-  return new Date(d).toLocaleDateString("en-GB", {
-    day: "2-digit", month: "short", year: "numeric",
-  });
+  return safeDateLabel(d, "-");
 }
 
 function daysLeft(endDate) {
   if (!endDate) return null;
-  return Math.ceil((new Date(endDate) - new Date()) / (1000 * 60 * 60 * 24));
+  const date = new Date(endDate);
+  if (Number.isNaN(date.getTime())) return null;
+  return Math.ceil((date - new Date()) / (1000 * 60 * 60 * 24));
 }
 
 export default function DateRange({ startDate, endDate }) {

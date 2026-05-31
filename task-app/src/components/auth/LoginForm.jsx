@@ -28,7 +28,7 @@ export default function LoginForm() {
   const handleLogin = async (e) => {
     e.preventDefault(); reset(); setLoading(true);
     try {
-      const data = await loginController(email, password);
+      const data = await loginController(email, password, remember);
       login(data);
       navigate("/dashboard");
     } catch (err) { setError(err.message); }

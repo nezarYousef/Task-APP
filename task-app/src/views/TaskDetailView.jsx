@@ -14,6 +14,7 @@ import StatusTabGroup from "../components/task/StatusTabGroup";
 import DateRange from "../components/task/DateRange";
 import SideCard from "../components/task/SideCard";
 import InfoRow from "../components/task/InfoRow";
+import { safeDateLabel } from "../utils/validation";
 
 /* ── Icon map ─────────────────────────────────────────────────────────────── */
 const I = {
@@ -128,9 +129,7 @@ export default function TaskDetailView() {
     }
   };
 
-  const fmtDate = (d) => d
-    ? new Date(d).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })
-    : "—";
+  const fmtDate = (d) => safeDateLabel(d, "-");
 
   if (loading) return <LoadingOverlay text="Loading task…" />;
 

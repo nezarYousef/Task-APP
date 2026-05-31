@@ -15,7 +15,14 @@ export function AuthProvider({ children }) {
       .finally(() => setLoading(false));
   }, []);
 
-  const login = useCallback((authData) => setUser({ userId: authData.userId, token: authData.token, userEmail: authData.email }), []);
+  const login = useCallback((authData) => {
+    setUser({
+      userId: authData.userId,
+      token: authData.token,
+      userEmail: authData.email,
+      isAdmin: authData.isAdmin === true,
+    });
+  }, []);
   const logout = useCallback(() => { logoutController(); setUser(null); }, []);
 
   return <AuthContext.Provider value={{ user, loading, login, logout }}>{children}</AuthContext.Provider>;

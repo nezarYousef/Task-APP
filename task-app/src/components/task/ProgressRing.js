@@ -5,7 +5,9 @@ const RADIUS      = 46;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
 export default function ProgressRing({ value, onChange }) {
-  const offset = CIRCUMFERENCE - (value / 100) * CIRCUMFERENCE;
+  const numericValue = Number(value);
+  const safeValue = Number.isFinite(numericValue) ? Math.min(100, Math.max(0, numericValue)) : 0;
+  const offset = CIRCUMFERENCE - (safeValue / 100) * CIRCUMFERENCE;
 
   return (
     <div className="progress-ring-wrap">
@@ -45,7 +47,7 @@ export default function ProgressRing({ value, onChange }) {
         </svg>
 
         <div className="progress-ring-center">
-          <span className="progress-pct">{value}%</span>
+          <span className="progress-pct">{Math.round(safeValue)}%</span>
           <span className="progress-lbl">Done</span>
         </div>
       </div>
@@ -55,7 +57,7 @@ export default function ProgressRing({ value, onChange }) {
           type="range"
           min="0"
           max="100"
-          value={value}
+          value={safeValue}
           className="progress-slider"
           onChange={(e) => onChange(Number(e.target.value))}
         />

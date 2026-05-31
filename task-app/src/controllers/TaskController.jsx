@@ -3,9 +3,23 @@ import {
   createTask, fetchTasks, fetchTask,
   updateTask, deleteTask, createDefaultTask, archiveTask,
 } from "../models/TaskModel";
+import {
+  clampProgress,
+  normalizePriority,
+  normalizeStatus,
+  requireTaskId,
+  requireUserId,
+  sanitizeChecklist,
+  sanitizeTags,
+  sanitizeText,
+  validateDateRange,
+  validatePriority,
+  validateStatus,
+} from "../utils/validation";
 
 // ── Fetch with filters ─────────────────────────────────────────────────────
 export async function getTasksController(userId, filters = {}) {
+  requireUserId(userId);
   let tasks = await fetchTasks(userId);
 
   // Archive filter: default = show only active (non-archived)
@@ -26,51 +40,84 @@ export async function getTasksController(userId, filters = {}) {
 }
 
 export async function getTaskController(userId, taskId) {
+  requireUserId(userId);
+  requireTaskId(taskId);
   return fetchTask(userId, taskId);
 }
 
 export async function addTaskController(userId, formData) {
+  requireUserId(userId);
   const { title, description, category, status, priority, startDate, endDate, imageUrl, checklist } = formData;
-  if (!title?.trim()) throw new Error("Task name is required.");
-  if (!startDate) throw new Error("Start date is required.");
-  if (!endDate) throw new Error("End date is required.");
-  if (new Date(endDate) < new Date(startDate)) throw new Error("End date must be after start date.");
+  const dates = validateDateRange(startDate, endDate);
   return createTask(userId, {
-    title: title.trim(), description: description?.trim() || "",
-    category: Array.isArray(category) ? category : [],
-    status: status || "waiting", priority: priority || "low",
-    startDate, endDate, progress: 0,
+    title: sanitizeText(title, { required: true, max: 120, fieldName: "Task name" }),
+    description: sanitizeText(description, { max: 2000, fieldName: "Task description" }),
+    category: sanitizeTags(category),
+    status: normalizeStatus(status),
+    priority: normalizePriority(priority),
+    startDate: dates.startDate,
+    endDate: dates.endDate,
+    progress: 0,
     imageUrl: imageUrl || null,
-    checklist: checklist || createDefaultTask().checklist,
+    checklist: sanitizeChecklist(checklist || createDefaultTask().checklist),
   });
 }
 
 export async function editTaskController(userId, taskId, updates) {
-  if (updates.title !== undefined && !updates.title?.trim()) throw new Error("Task name cannot be empty.");
-  return updateTask(userId, taskId, updates);
+  requireUserId(userId);
+  requireTaskId(taskId);
+  const safeUpdates = {};
+
+  if (updates.title !== undefined) {
+    safeUpdates.title = sanitizeText(updates.title, { required: true, max: 120, fieldName: "Task name" });
+  }
+  if (updates.description !== undefined) {
+    safeUpdates.description = sanitizeText(updates.description, { max: 2000, fieldName: "Task description" });
+  }
+  if (updates.category !== undefined) safeUpdates.category = sanitizeTags(updates.category);
+  if (updates.status !== undefined) safeUpdates.status = validateStatus(updates.status);
+  if (updates.priority !== undefined) safeUpdates.priority = validatePriority(updates.priority);
+  if (updates.progress !== undefined) safeUpdates.progress = clampProgress(updates.progress);
+  if (updates.startDate !== undefined || updates.endDate !== undefined) {
+    const dates = validateDateRange(updates.startDate, updates.endDate);
+    safeUpdates.startDate = dates.startDate;
+    safeUpdates.endDate = dates.endDate;
+  }
+  if (updates.imageUrl !== undefined) safeUpdates.imageUrl = updates.imageUrl || null;
+  if (updates.checklist !== undefined) safeUpdates.checklist = sanitizeChecklist(updates.checklist);
+
+  return updateTask(userId, taskId, safeUpdates);
 }
 
 export async function updateProgressController(userId, taskId, progress) {
-  const p = Math.min(100, Math.max(0, Number(progress)));
+  requireUserId(userId);
+  requireTaskId(taskId);
+  const p = clampProgress(progress);
   const updates = p === 100 ? { progress: p, status: "complete" } : { progress: p };
   return updateTask(userId, taskId, updates);
 }
 
 export async function updateStatusController(userId, taskId, status) {
-  const allowed = ["waiting", "inprogress", "complete", "canceled"];
-  if (!allowed.includes(status)) throw new Error("Invalid status.");
-  return updateTask(userId, taskId, { status });
+  requireUserId(userId);
+  requireTaskId(taskId);
+  return updateTask(userId, taskId, { status: validateStatus(status) });
 }
 
 export async function removeTaskController(userId, taskId) {
+  requireUserId(userId);
+  requireTaskId(taskId);
   return deleteTask(userId, taskId);
 }
 
 export async function archiveTaskController(userId, taskId) {
+  requireUserId(userId);
+  requireTaskId(taskId);
   return archiveTask(userId, taskId, true);
 }
 
 export async function unarchiveTaskController(userId, taskId) {
+  requireUserId(userId);
+  requireTaskId(taskId);
   return archiveTask(userId, taskId, false);
 }
 

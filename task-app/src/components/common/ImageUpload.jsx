@@ -1,13 +1,21 @@
 import React, { useRef, useState } from "react";
+import { validateImageFile } from "../../utils/validation";
 
-export default function ImageUpload({ preview, onPreviewChange }) {
+export default function ImageUpload({ preview, onPreviewChange, onError }) {
   const fileRef = useRef(null);
   const [drag, setDrag] = useState(false);
 
   const handleFile = (file) => {
-    if (!file || !file.type.startsWith("image/")) return;
+    try {
+      validateImageFile(file);
+    } catch (err) {
+      onError?.(err.message);
+      return;
+    }
+    if (!file) return;
     const reader = new FileReader();
     reader.onload = (e) => onPreviewChange(e.target.result);
+    reader.onerror = () => onError?.("Could not read this image. Please choose another file.");
     reader.readAsDataURL(file);
   };
 

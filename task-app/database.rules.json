@@ -1,0 +1,59 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid",
+        "tasks": {
+          "$taskId": {
+            ".validate": "newData.hasChildren(['title', 'status', 'priority', 'startDate', 'endDate', 'progress', 'archived'])",
+            "title": {
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 120"
+            },
+            "description": {
+              ".validate": "!newData.exists() || (newData.isString() && newData.val().length <= 2000)"
+            },
+            "category": {
+              ".validate": "!newData.exists() || newData.isString() || newData.hasChildren()"
+            },
+            "status": {
+              ".validate": "newData.isString() && newData.val().matches(/^(waiting|inprogress|complete|canceled)$/)"
+            },
+            "priority": {
+              ".validate": "newData.isString() && newData.val().matches(/^(low|medium|high)$/)"
+            },
+            "startDate": {
+              ".validate": "newData.isString()"
+            },
+            "endDate": {
+              ".validate": "newData.isString()"
+            },
+            "progress": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100"
+            },
+            "archived": {
+              ".validate": "newData.isBoolean()"
+            },
+            "imageUrl": {
+              ".validate": "!newData.exists() || newData.isString() || newData.val() === null"
+            },
+            "checklist": {
+              ".validate": "!newData.exists() || newData.hasChildren()"
+            },
+            "createdAt": {
+              ".validate": "!newData.exists() || newData.isString()"
+            },
+            "userId": {
+              ".validate": "!newData.exists() || newData.val() === auth.uid"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        }
+      }
+    },
+    ".read": false,
+    ".write": false
+  }
+}

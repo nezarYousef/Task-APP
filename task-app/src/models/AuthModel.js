@@ -1,6 +1,13 @@
 import { FIREBASE_API_KEY, FIREBASE_AUTH_URL } from "../firebase/config";
 
 const BASE = FIREBASE_AUTH_URL;
+const SESSION_KEYS = ["authToken", "refreshToken", "userId", "userEmail", "tokenExpiry", "isAdmin"];
+
+const getSessionStore = () => (
+  localStorage.getItem("authToken") ? localStorage : sessionStorage
+);
+
+const clearStore = (store) => SESSION_KEYS.forEach((key) => store.removeItem(key));
 
 function formatAuthError(code) {
   const map = {
@@ -53,35 +60,42 @@ export async function refreshToken(refreshTkn) {
   const res = await fetch(`https://securetoken.googleapis.com/v1/token?key=${FIREBASE_API_KEY}`, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: `grant_type=refresh_token&refresh_token=${refreshTkn}`,
+    body: new URLSearchParams({ grant_type: "refresh_token", refresh_token: refreshTkn }),
   });
   const data = await res.json();
   if (!res.ok) throw new Error(formatAuthError(data.error?.message));
   return { token: data.id_token, refreshToken: data.refresh_token, userId: data.user_id };
 }
 
-export function persistSession(authData) {
-  localStorage.setItem("authToken", authData.token);
-  localStorage.setItem("refreshToken", authData.refreshToken);
-  localStorage.setItem("userId", authData.userId);
-  localStorage.setItem("userEmail", authData.email);
-  localStorage.setItem("tokenExpiry", String(Date.now() + Number(authData.expiresIn) * 1000));
+export function persistSession(authData, remember = false) {
+  clearSession();
+  const store = remember ? localStorage : sessionStorage;
+  store.setItem("authToken", authData.token);
+  store.setItem("refreshToken", authData.refreshToken);
+  store.setItem("userId", authData.userId);
+  store.setItem("userEmail", authData.email);
+  store.setItem("tokenExpiry", String(Date.now() + Number(authData.expiresIn || 3600) * 1000));
+  if (authData.isAdmin !== undefined) store.setItem("isAdmin", String(authData.isAdmin));
 }
 
 export function clearSession() {
-  ["authToken", "refreshToken", "userId", "userEmail", "tokenExpiry"].forEach((k) => localStorage.removeItem(k));
+  clearStore(localStorage);
+  clearStore(sessionStorage);
 }
 
 export function getSession() {
-  const token = localStorage.getItem("authToken");
-  const userId = localStorage.getItem("userId");
+  const store = getSessionStore();
+  const token = store.getItem("authToken");
+  const userId = store.getItem("userId");
   if (!token || !userId) return null;
   return {
     token,
     userId,
-    userEmail: localStorage.getItem("userEmail"),
-    tokenExpiry: localStorage.getItem("tokenExpiry"),
-    refreshToken: localStorage.getItem("refreshToken"),
+    userEmail: store.getItem("userEmail"),
+    tokenExpiry: store.getItem("tokenExpiry"),
+    refreshToken: store.getItem("refreshToken"),
+    isAdmin: store.getItem("isAdmin") === "true",
+    remember: store === localStorage,
   };
 }
 
