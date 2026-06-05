@@ -39,7 +39,7 @@ const CheckboxTick = () => (
 );
 
 /* ── Checklist display ─────────────────────────────────────────────────────── */
-function ChecklistDisplay({ items }) {
+function ChecklistDisplay({ items, onToggle, saving }) {
   if (!items || items.length === 0) return null;
   const done = items.filter((c) => c.done).length;
   return (
@@ -47,15 +47,23 @@ function ChecklistDisplay({ items }) {
       <div className="info-card-title">
         <span className="info-card-title-icon">{I.Check}</span>
         Checklist ({done}/{items.length})
+        {saving && <span className="checklist-saving" aria-live="polite">Saving...</span>}
       </div>
       <div className="checklist">
         {items.map((item) => (
-          <div key={item.id} className={`checklist-item ${item.done ? "done" : ""}`}>
+          <button
+            key={item.id}
+            type="button"
+            className={`checklist-item checklist-action ${item.done ? "done" : ""}`}
+            onClick={() => onToggle(item.id)}
+            disabled={saving}
+            aria-pressed={item.done}
+          >
             <div className={`checklist-box ${item.done ? "checked" : ""}`}>
               {item.done && <CheckboxTick />}
             </div>
-            {item.text}
-          </div>
+            <span>{item.text}</span>
+          </button>
         ))}
       </div>
     </div>
@@ -93,6 +101,7 @@ export default function TaskDetailView() {
   const [activeStatus, setActiveStatus] = useState("inprogress");
   const [progress, setProgress] = useState(0);
   const [isDirty, setIsDirty] = useState(false);
+  const [checklistSaving, setChecklistSaving] = useState(false);
 
   useEffect(() => {
     if (!user?.userId || !id) return;
@@ -116,6 +125,29 @@ export default function TaskDetailView() {
 
   const handleStatusChange = (s) => { setActiveStatus(s); setIsDirty(true); };
   const handleProgressChange = (v) => { setProgress(v); setIsDirty(true); };
+
+  const handleChecklistToggle = async (itemId) => {
+    if (checklistSaving || !task?.checklist) return;
+
+    const currentChecklist = task.checklist;
+    const nextChecklist = currentChecklist.map((item) =>
+      item.id === itemId ? { ...item, done: !item.done } : item
+    );
+
+    setTask((prev) => ({ ...prev, checklist: nextChecklist }));
+    setChecklistSaving(true);
+    setError("");
+
+    try {
+      const updated = await editTaskController(user.userId, id, { checklist: nextChecklist });
+      setTask((prev) => ({ ...prev, ...updated, checklist: updated.checklist || nextChecklist }));
+    } catch (e) {
+      setTask((prev) => ({ ...prev, checklist: currentChecklist }));
+      setError(e.message);
+    } finally {
+      setChecklistSaving(false);
+    }
+  };
 
   const handleDelete = async () => {
     setDelLoading(true);
@@ -220,7 +252,11 @@ export default function TaskDetailView() {
             </div>
           )}
 
-          <ChecklistDisplay items={task.checklist} />
+          <ChecklistDisplay
+            items={task.checklist}
+            onToggle={handleChecklistToggle}
+            saving={checklistSaving}
+          />
         </div>
 
         {/* RIGHT */}

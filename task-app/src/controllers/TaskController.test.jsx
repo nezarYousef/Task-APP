@@ -1,8 +1,10 @@
 import {
   addTaskController,
+  editTaskController,
   updateProgressController,
   updateStatusController,
 } from "./TaskController";
+import { updateTask } from "../models/TaskModel";
 
 jest.mock("../models/TaskModel", () => ({
   createDefaultTask: () => ({
@@ -17,6 +19,10 @@ jest.mock("../models/TaskModel", () => ({
 }));
 
 describe("TaskController edge cases", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   test("rejects empty task title", async () => {
     await expect(addTaskController("user-1", {
       title: " ",
@@ -33,5 +39,18 @@ describe("TaskController edge cases", () => {
   test("rejects text progress instead of saving NaN", async () => {
     await expect(updateProgressController("user-1", "task-1", "almost done"))
       .rejects.toThrow("Progress must be a number");
+  });
+
+  test("saves sanitized checklist updates", async () => {
+    await editTaskController("user-1", "task-1", {
+      checklist: [
+        { id: "c1", text: " Review API response ", done: true },
+        { id: "c2", text: " ", done: true },
+      ],
+    });
+
+    expect(updateTask).toHaveBeenCalledWith("user-1", "task-1", {
+      checklist: [{ id: "c1", text: "Review API response", done: true }],
+    });
   });
 });

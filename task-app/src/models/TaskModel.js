@@ -51,6 +51,20 @@ function normalizeTask(task) {
   };
 }
 
+function normalizeTaskUpdate(update) {
+  const normalized = { ...update };
+  if (Object.prototype.hasOwnProperty.call(normalized, "category")) {
+    normalized.category = normalizeToArray(normalized.category);
+  }
+  if (Object.prototype.hasOwnProperty.call(normalized, "checklist")) {
+    normalized.checklist = normalizeToArray(normalized.checklist);
+  }
+  if (Object.prototype.hasOwnProperty.call(normalized, "archived")) {
+    normalized.archived = normalized.archived === true;
+  }
+  return normalized;
+}
+
 export async function createTask(userId, taskData) {
   const token = authToken();
   const payload = {
@@ -93,7 +107,7 @@ export async function updateTask(userId, taskId, updates) {
   });
   const data = await readJson(res);
   if (!res.ok) throw new Error(requestError(data, "Failed to update task"));
-  return { id: taskId, ...data };
+  return { id: taskId, ...normalizeTaskUpdate(data || {}) };
 }
 
 export async function deleteTask(userId, taskId) {
@@ -113,7 +127,7 @@ export async function archiveTask(userId, taskId, archived = true) {
   });
   const data = await readJson(res);
   if (!res.ok) throw new Error(requestError(data, "Failed to archive task"));
-  return { id: taskId, ...data };
+  return { id: taskId, ...normalizeTaskUpdate(data || {}) };
 }
 
 export function createDefaultTask() {
