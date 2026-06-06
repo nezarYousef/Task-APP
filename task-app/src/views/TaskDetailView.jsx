@@ -9,11 +9,13 @@ import LoadingOverlay from "../components/common/LoadingOverlay";
 import Spinner from "../components/common/Spinner";
 import StatusBadge from "../components/common/StatusBadge";
 import ConfirmModal from "../components/common/ConfirmModal";
+import TagInput from "../components/common/TagInput";
 import ProgressRing from "../components/task/ProgressRing";
 import StatusTabGroup from "../components/task/StatusTabGroup";
 import DateRange from "../components/task/DateRange";
 import SideCard from "../components/task/SideCard";
 import InfoRow from "../components/task/InfoRow";
+import PrioritySelector from "../components/task/PrioritySelector";
 import { safeDateLabel } from "../utils/validation";
 
 /* ── Icon map ─────────────────────────────────────────────────────────────── */
@@ -30,6 +32,8 @@ const I = {
   Danger: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><line x1="15" y1="9" x2="9" y2="15" /><line x1="9" y1="9" x2="15" y2="15" /></svg>,
   Delete: <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" /></svg>,
   Created: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>,
+  Save: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><polyline points="20 6 9 17 4 12" /></svg>,
+  Close: <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>,
 };
 
 const CheckboxTick = () => (
@@ -70,6 +74,63 @@ function ChecklistDisplay({ items, onToggle, saving }) {
   );
 }
 
+const taskToDraft = (task = {}) => ({
+  title: task.title || "",
+  description: task.description || "",
+  category: Array.isArray(task.category) ? task.category : [task.category].filter(Boolean),
+  priority: task.priority || "low",
+  startDate: task.startDate || "",
+  endDate: task.endDate || "",
+});
+
+const sameList = (a = [], b = []) =>
+  a.length === b.length && a.every((item, index) => item === b[index]);
+
+function EditableDisplay({ field, onEdit, className = "", children }) {
+  const openEdit = () => onEdit(field);
+
+  return (
+    <div
+      className={`inline-edit-display ${className}`}
+      role="button"
+      tabIndex={0}
+      onDoubleClick={openEdit}
+      onKeyDown={(event) => {
+        if (event.key === "Enter") openEdit();
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function InlineActions({ dirty, saving, onSave, onCancel }) {
+  return (
+    <div className="inline-edit-actions">
+      {(dirty || saving) && (
+        <button
+          type="button"
+          className="inline-save-btn"
+          onClick={onSave}
+          disabled={saving}
+          aria-label="Save field"
+        >
+          {saving ? <Spinner size="sm" /> : I.Save}
+        </button>
+      )}
+      <button
+        type="button"
+        className="inline-cancel-btn"
+        onClick={onCancel}
+        disabled={saving}
+        aria-label="Cancel edit"
+      >
+        {I.Close}
+      </button>
+    </div>
+  );
+}
+
 /* ── Page header badges ────────────────────────────────────────────────────── */
 function TaskHeaderTags({ category, priority }) {
   return (
@@ -102,12 +163,20 @@ export default function TaskDetailView() {
   const [progress, setProgress] = useState(0);
   const [isDirty, setIsDirty] = useState(false);
   const [checklistSaving, setChecklistSaving] = useState(false);
+  const [editingField, setEditingField] = useState(null);
+  const [savingField, setSavingField] = useState(null);
+  const [editDraft, setEditDraft] = useState(taskToDraft());
 
   useEffect(() => {
     if (!user?.userId || !id) return;
     setLoading(true);
     getTaskController(user.userId, id)
-      .then((t) => { setTask(t); setActiveStatus(t.status); setProgress(t.progress || 0); })
+      .then((t) => {
+        setTask(t);
+        setEditDraft(taskToDraft(t));
+        setActiveStatus(t.status);
+        setProgress(t.progress || 0);
+      })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
   }, [user, id]);
@@ -125,6 +194,81 @@ export default function TaskDetailView() {
 
   const handleStatusChange = (s) => { setActiveStatus(s); setIsDirty(true); };
   const handleProgressChange = (v) => { setProgress(v); setIsDirty(true); };
+
+  const updateDraft = (key, value) => {
+    setEditDraft((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const currentDraft = taskToDraft(task || {});
+
+  const isInlineDirty = (field) => {
+    if (!task) return false;
+    if (field === "category") return !sameList(editDraft.category, currentDraft.category);
+    if (field === "timeline") {
+      return editDraft.startDate !== currentDraft.startDate || editDraft.endDate !== currentDraft.endDate;
+    }
+    return editDraft[field] !== currentDraft[field];
+  };
+
+  const startEditing = (field) => {
+    if (!task || savingField) return;
+    if (editingField && editingField !== field && isInlineDirty(editingField)) return;
+    setEditDraft(taskToDraft(task));
+    setEditingField(field);
+    setError("");
+  };
+
+  const cancelInlineEdit = () => {
+    if (savingField) return;
+    setEditDraft(taskToDraft(task || {}));
+    setEditingField(null);
+  };
+
+  const inlineUpdatesFor = (field) => {
+    if (field === "timeline") {
+      return { startDate: editDraft.startDate, endDate: editDraft.endDate };
+    }
+    if (field === "category") return { category: editDraft.category };
+    return { [field]: editDraft[field] };
+  };
+
+  const handleInlineKeyDown = (event, field, multiline = false) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      cancelInlineEdit();
+    }
+    if (!multiline && event.key === "Enter") {
+      event.preventDefault();
+      saveInlineField(field);
+    }
+    if (multiline && event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
+      event.preventDefault();
+      saveInlineField(field);
+    }
+  };
+
+  const saveInlineField = async (field) => {
+    if (!task || !isInlineDirty(field)) {
+      setEditingField(null);
+      return;
+    }
+
+    const updates = inlineUpdatesFor(field);
+    setSavingField(field);
+    setError("");
+
+    try {
+      const updated = await editTaskController(user.userId, id, updates);
+      const nextTask = { ...task, ...updates, ...updated };
+      setTask(nextTask);
+      setEditDraft(taskToDraft(nextTask));
+      setEditingField(null);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setSavingField(null);
+    }
+  };
 
   const handleChecklistToggle = async (itemId) => {
     if (checklistSaving || !task?.checklist) return;
@@ -184,7 +328,27 @@ export default function TaskDetailView() {
       <div className="page-header">
         <div>
           <p className="page-eyebrow">Task #{id.slice(-4).toUpperCase()}</p>
-          <h1 className="page-title">{task.title}</h1>
+          {editingField === "title" ? (
+            <div className="inline-edit-block detail-title-edit">
+              <input
+                className="form-control no-icon detail-title-input"
+                value={editDraft.title}
+                onChange={(event) => updateDraft("title", event.target.value)}
+                onKeyDown={(event) => handleInlineKeyDown(event, "title")}
+                autoFocus
+              />
+              <InlineActions
+                dirty={isInlineDirty("title")}
+                saving={savingField === "title"}
+                onSave={() => saveInlineField("title")}
+                onCancel={cancelInlineEdit}
+              />
+            </div>
+          ) : (
+            <EditableDisplay field="title" onEdit={startEditing} className="detail-title-display">
+              <h1 className="page-title">{task.title}</h1>
+            </EditableDisplay>
+          )}
           <TaskHeaderTags category={category} priority={task.priority} />
         </div>
         <div className="detail-header-actions">
@@ -229,28 +393,85 @@ export default function TaskDetailView() {
               <span className="info-card-title-icon">{I.Overview}</span>
               Task Overview
             </div>
-            <InfoRow icon={I.Title} label="Title">    {task.title}</InfoRow>
+            <InfoRow icon={I.Title} label="Title">
+              <EditableDisplay field="title" onEdit={startEditing}>
+                {editingField === "title" ? editDraft.title : task.title}
+              </EditableDisplay>
+            </InfoRow>
             <InfoRow icon={I.Category} label="Category">
+              {editingField === "category" ? (
+                <div className="inline-edit-block">
+                  <TagInput
+                    tags={editDraft.category}
+                    onChange={(tags) => updateDraft("category", tags)}
+                    placeholder="Add category"
+                  />
+                  <InlineActions
+                    dirty={isInlineDirty("category")}
+                    saving={savingField === "category"}
+                    onSave={() => saveInlineField("category")}
+                    onCancel={cancelInlineEdit}
+                  />
+                </div>
+              ) : (
+                <EditableDisplay field="category" onEdit={startEditing}>
               <span className="text-accent">{category.join(" / ") || "—"}</span>
+                </EditableDisplay>
+              )}
             </InfoRow>
             <InfoRow icon={I.Status} label="Current Status">
               <StatusBadge status={activeStatus} />
             </InfoRow>
             <InfoRow icon={I.Priority} label="Priority">
+              {editingField === "priority" ? (
+                <div className="inline-edit-block">
+                  <PrioritySelector value={editDraft.priority} onChange={(value) => updateDraft("priority", value)} />
+                  <InlineActions
+                    dirty={isInlineDirty("priority")}
+                    saving={savingField === "priority"}
+                    onSave={() => saveInlineField("priority")}
+                    onCancel={cancelInlineEdit}
+                  />
+                </div>
+              ) : (
+                <EditableDisplay field="priority" onEdit={startEditing}>
               <span className="task-priority-text">{task.priority || "—"}</span>
+                </EditableDisplay>
+              )}
             </InfoRow>
           </div>
 
           {/* Description */}
-          {task.description && (
-            <div className="card desc-card">
-              <div className="info-card-title">
-                <span className="info-card-title-icon">{I.Desc}</span>
-                Description
-              </div>
-              <p className="desc-text">{task.description}</p>
+          <div className="card desc-card">
+            <div className="info-card-title">
+              <span className="info-card-title-icon">{I.Desc}</span>
+              Description
             </div>
-          )}
+            {editingField === "description" ? (
+              <div className="inline-edit-block">
+                <textarea
+                  className="form-control no-icon detail-description-input"
+                  value={editDraft.description}
+                  onChange={(event) => updateDraft("description", event.target.value)}
+                  onKeyDown={(event) => handleInlineKeyDown(event, "description", true)}
+                  rows={5}
+                  autoFocus
+                />
+                <InlineActions
+                  dirty={isInlineDirty("description")}
+                  saving={savingField === "description"}
+                  onSave={() => saveInlineField("description")}
+                  onCancel={cancelInlineEdit}
+                />
+              </div>
+            ) : (
+              <EditableDisplay field="description" onEdit={startEditing}>
+                <p className={`desc-text ${task.description ? "" : "desc-empty"}`}>
+                  {task.description || "No description"}
+                </p>
+              </EditableDisplay>
+            )}
+          </div>
 
           <ChecklistDisplay
             items={task.checklist}
@@ -266,7 +487,40 @@ export default function TaskDetailView() {
           </SideCard>
 
           <SideCard title="Timeline" icon={I.Timeline}>
-            <DateRange startDate={task.startDate} endDate={task.endDate} />
+            {editingField === "timeline" ? (
+              <div className="inline-edit-block detail-timeline-edit">
+                <div className="detail-date-edit-grid">
+                  <label className="form-label">
+                    Start
+                    <input
+                      className="form-control no-icon"
+                      type="datetime-local"
+                      value={editDraft.startDate}
+                      onChange={(event) => updateDraft("startDate", event.target.value)}
+                    />
+                  </label>
+                  <label className="form-label">
+                    End
+                    <input
+                      className="form-control no-icon"
+                      type="datetime-local"
+                      value={editDraft.endDate}
+                      onChange={(event) => updateDraft("endDate", event.target.value)}
+                    />
+                  </label>
+                </div>
+                <InlineActions
+                  dirty={isInlineDirty("timeline")}
+                  saving={savingField === "timeline"}
+                  onSave={() => saveInlineField("timeline")}
+                  onCancel={cancelInlineEdit}
+                />
+              </div>
+            ) : (
+              <EditableDisplay field="timeline" onEdit={startEditing} className="timeline-edit-display">
+                <DateRange startDate={task.startDate} endDate={task.endDate} />
+              </EditableDisplay>
+            )}
           </SideCard>
 
           <SideCard title="Created" icon={I.Created}>

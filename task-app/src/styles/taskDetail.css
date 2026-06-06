@@ -132,6 +132,120 @@
   white-space: pre-wrap;
 }
 
+.desc-empty {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ── Inline task editing ─────────────────────────────────────────────────── */
+.inline-edit-display {
+  width: 100%;
+  border-radius: 10px;
+  cursor: text;
+  transition: background var(--tr), box-shadow var(--tr), color var(--tr);
+}
+
+.inline-edit-display:hover,
+.inline-edit-display:focus-visible {
+  background: rgba(238, 105, 131, 0.06);
+  box-shadow: 0 0 0 6px rgba(238, 105, 131, 0.06);
+  outline: none;
+}
+
+.detail-title-display {
+  width: fit-content;
+  max-width: 100%;
+}
+
+.detail-title-display:hover,
+.detail-title-display:focus-visible {
+  background: transparent;
+}
+
+.inline-edit-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.detail-title-edit {
+  flex-direction: row;
+  align-items: center;
+  max-width: min(680px, 100%);
+}
+
+.detail-title-input {
+  font-family: "Playfair Display", serif;
+  font-size: 30px;
+  font-weight: 700;
+  padding: 10px 14px;
+}
+
+.detail-description-input {
+  min-height: 140px;
+}
+
+.inline-edit-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.inline-save-btn,
+.inline-cancel-btn {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(238, 105, 131, 0.24);
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  color: var(--rose);
+  transition: background var(--tr), border-color var(--tr), color var(--tr), transform var(--tr);
+}
+
+.inline-save-btn {
+  background: linear-gradient(135deg, var(--rose), var(--crimson));
+  border-color: transparent;
+  color: #fff;
+}
+
+.inline-save-btn:hover:not(:disabled),
+.inline-cancel-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.inline-cancel-btn:hover:not(:disabled) {
+  background: rgba(238, 105, 131, 0.08);
+  border-color: rgba(238, 105, 131, 0.38);
+}
+
+.inline-save-btn:disabled,
+.inline-cancel-btn:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.detail-date-edit-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.detail-date-edit-grid .form-label {
+  margin-bottom: 0;
+}
+
+.detail-date-edit-grid .form-control {
+  margin-top: 8px;
+}
+
+.timeline-edit-display {
+  display: block;
+}
+
 /* ── Checklist card ──────────────────────────────────────────────────────── */
 .detail-checklist-card {
   padding: 28px;
